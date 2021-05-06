@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request
 #from pyspark import SparkContext
 #sc = SparkContext('local')
-"""
+
 import tweepy
 from tweepy import OAuthHandler
 
@@ -13,7 +13,7 @@ access_token_secret = "N0XU2cNl14QsO13IRDHCSFmuZFpELKqNG2pA9mkwaQfrg"
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
-"""
+
 app = Flask(__name__)
 
 
@@ -26,10 +26,15 @@ def home():
 def check():
     if request.method == "POST":
         user = request.form["name"]
-        #usr = api.get_user(user)
-        # print(usr)
+        find_user(user)
 
     return render_template("index.html")
+
+
+@app.route("/")
+def find_user(usr):
+    user = api.get_user(usr)
+    print(user.name)
 
 
 if __name__ == "__main__":
