@@ -11,22 +11,6 @@ from pyspark import SparkContext, SparkConf
 import csv
 import tweepy
 from tweepy import OAuthHandler
-"""
-# create the session
-conf = SparkConf().set("spark.ui.port", "4050").set('spark.executor.memory',
-                                                    '4G').set('spark.driver.memory', '45G').set('spark.driver.maxResultSize', '10G')
-
-# create the context
-sc = pyspark.SparkContext(conf=conf)
-spark = SparkSession.builder.getOrCreate()
-
-df = spark.read.load("twitter_human_bots_dataset.csv",
-                     format="csv",
-                     sep=",",
-                     inferSchema="true",
-                     header="true"
-                     )
-"""
 
 consumer_key = "phCKVDVUS7nBmCvN5aJZWwrxo"
 consumer_secret = "3k7gMiVmxPPDI0C6kTc8uMTL0nSdNfeeU82OGcNVftkaMmujlR"
@@ -45,25 +29,26 @@ auth.get_access_token(user_pint_input)
 
 api = tweepy.API(auth)
 
-# user_timeline = user.timeline()
-# for tweet in user_timeline:
-#    print(tweet)
 
-
-with open('twitter_human_bots_dataset.csv', 'r', encoding='latin1') as inp, open('twitter_human_bots_dataset_clean.csv', 'w', newline='') as out:
+with open('twitter_human_bots_dataset_clean.csv', 'r', encoding='latin1') as inp, open('clean.csv', 'w', newline='') as out:
     next(inp)
     writer = csv.writer(out)
-    writer.writerow(['id', 'account_type'])
+    writer.writerow(['id', 'name', 'screen name', 'location', 'description', 'followers',
+                    'friends', 'image', 'favourites', 'verified', 'tweets', 'account_type'])
     for row in csv.reader(inp):
         try:
             user = api.get_user(row[0])
-            print(user.screen_name)
-            writer.writerow(row)
+
+            tweets = api.user_timeline(screen_name=user.screen_name,
+                                       count=200,
+                                       include_rts=False,
+                                       tweet_mode='extended'
+                                       )
+            twenty_tweets = []
+            for info in tweets[:20]:
+                twenty_tweets.append(info.full_text)
+            writer.writerow([row[0], user.name, user.screen_name, user.location, user.description, user.followers_count,
+                            user.friends_count, user.default_profile_image, user.favourites_count, user.verified, twenty_tweets, row[1]])
+
         except tweepy.TweepError:
             pass
-# inp.close()
-
-# user = api.get_user(row[0])
-# print(user.followers_count)
-# for friend in user.friends():
-#    print(friend.screen_name)
