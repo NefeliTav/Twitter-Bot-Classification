@@ -1,7 +1,19 @@
 import csv
-import tweepy
 import langdetect
+import tweepy
 from tweepy import OAuthHandler
+import re
+
+
+def remove_emoji(string):
+    regrex_pattern = re.compile(pattern="["
+                                        u"\U0001F600-\U0001F64F"  # emoticons
+                                        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+                                        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+                                        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                                        "]+", flags=re.UNICODE)
+    return regrex_pattern.sub(r'', text)
+
 
 # tweepy authentication
 consumer_key = "phCKVDVUS7nBmCvN5aJZWwrxo"
@@ -25,14 +37,13 @@ api = tweepy.API(auth)
 with open('twitter_human_bots_dataset.csv', 'r', encoding='latin1') as inp, open('clean_dataset.csv', 'w', newline='') as out:
     next(inp)
     writer = csv.writer(out)
-    writer.writerow(['id', 'account_type', 'screen_name', 'description', 'follower_count', 'geo_enabled', 'friends_count',  # fields to be taken into consideration
-                     'listed_count', 'created_at', 'statuses_count', 'has_extended_profile', 'default_profile',
-                     'default_profile_image', 'URL', 'retweets', 'with_url', 'with_mention', 'tweet_text'])
+    writer.writerow(['id', 'account_type', 'screen_name', 'description', 'follower_count', 'geo_enabled', 'verified', 'friends_count', 'listed_count',
+                    'created_at', 'statuses_count', 'has_extended_profile', 'default_profile', 'default_profile_image', 'retweets', 'with_url', 'with_mention', 'Tweet_Text'])
 
     # check every user id
     for row in csv.reader(inp):
         try:
-            # count
+           # count
             retweets = 0
             with_mention = 0
             with_url = 0
@@ -57,11 +68,7 @@ with open('twitter_human_bots_dataset.csv', 'r', encoding='latin1') as inp, open
 
                 # combine all tweets into one big text
                 text = text + " " + tweet.full_text
-            text = text.replace("\n", " ")
-            if "expanded_url" not in user.entities.keys():
-                URL = "NO_URL"
-            else:
-                URL = user.entities["expanded_url"]
+            text = remove_emoji(text).replace("\n", " ")
 
             # find retweets,mentions and urls per tweet
             if len(tweets) >= 1:
@@ -81,9 +88,10 @@ with open('twitter_human_bots_dataset.csv', 'r', encoding='latin1') as inp, open
                 continue
 
             # create a new clean and complete csv file with the dataset
-            writer.writerow([row[0], row[1], user.screen_name, user.description.replace("\n", " "), user.followers_count,
-                             user.geo_enabled, user.friends_count, user.listed_count, user.created_at, user.statuses_count,
-                             user.has_extended_profile, user.default_profile, user.default_profile_image, URL, retweets, with_url,
+            writer.writerow([row[0], row[1], user.screen_name, remove_emoji(user.description).replace("\n", " "), user.followers_count,
+                             user.geo_enabled, user.verified, user.friends_count, user.listed_count, user.created_at,
+                             user.statuses_count,
+                             user.has_extended_profile, user.default_profile, user.default_profile_image, retweets, with_url,
                              with_mention, text])
 
         except tweepy.TweepError:
