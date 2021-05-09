@@ -39,7 +39,7 @@ with open('twitter_human_bots_dataset.csv', 'r', encoding='latin1') as inp, open
             # find user
             user = api.get_user(row[0])
             tweets = api.user_timeline(
-                screen_name=user.screen_name, count=130, include_rts=False, tweet_mode='extended')
+                screen_name=user.screen_name, count=130, include_rts=True, tweet_mode='extended')
 
             # read 130 of user's tweets
             for tweet in tweets:
@@ -47,14 +47,14 @@ with open('twitter_human_bots_dataset.csv', 'r', encoding='latin1') as inp, open
                     if tweet.retweeted_status:
                         retweets += 1
                 except AttributeError:
-                    pass
+                    # combine all tweets into one big text
+                    text = text + " " + tweet.full_text
+
                 if tweet.entities['urls']:
                     with_url += 1
                 if tweet.entities['user_mentions']:
                     with_mention += 1
 
-                # combine all tweets into one big text
-                text = text + " " + tweet.full_text
             text = remove_emoji(text).replace("\n", " ")
             text = re.sub(r"http\S+", "", text)
             text = re.sub(
