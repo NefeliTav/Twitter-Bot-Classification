@@ -17,8 +17,8 @@ lancaster = LancasterStemmer()
 def clean(text):
     text = text.lower()
     text = text.strip()
-    text = re.sub(r'[^\w\s]', '', text)
-    text = re.sub(r"http\S+", "", text)
+    text = re.sub(r'[^\w\s]', ' ', text)
+    text = re.sub(r"http\S+", " ", text)
     text = re.sub(r"(?:\@|http?\://|https?\://|www)\S+", " ", text)
     return text
 
