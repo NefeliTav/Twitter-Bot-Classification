@@ -79,8 +79,8 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # clean data and retrieve the interesting info for each user
-with open('final.csv', 'r', encoding='latin1') as inp, open('twitter_human_bots_dataset_clean.csv', 'w', newline='') as out:
-    next(inp)
+with open('3.csv', 'r', encoding='latin1') as inp, open('twitter_human_bots_dataset_clean.csv', 'w', newline='') as out:
+    # next(inp)
     writer = csv.writer(out)
     writer.writerow(['id', 'account_type', 'screen_name', 'follower_count', 'friends_count', 'listed_count', 'statuses_count', 'geo_enabled', 'verified',
                     'created_at', 'has_extended_profile', 'default_profile', 'default_profile_image', 'retweets', 'with_url', 'with_mention', 'avg_cosine', 'description', 'tweet_text'])
@@ -98,7 +98,7 @@ with open('final.csv', 'r', encoding='latin1') as inp, open('twitter_human_bots_
             # find user
             user = api.get_user(row[0])
             tweets = api.user_timeline(
-                screen_name=user.screen_name, count=200, include_rts=True, tweet_mode='extended')
+                screen_name=user.screen_name, count=130, include_rts=True, tweet_mode='extended')
 
             # read 130 of user's tweets
             for tweet in tweets:
@@ -147,7 +147,7 @@ with open('final.csv', 'r', encoding='latin1') as inp, open('twitter_human_bots_
 
             # clean description
             description = " ".join((re.sub(
-                r"(?:\@|http?\://|https?\://|www)\S+", "", remove_emoji(user.description).replace("\n", " "))).split()),
+                r"(?:\@|http?\://|https?\://|www)\S+", "", remove_emoji(user.description).replace("\n", " "))).split())
             # create a new clean and complete csv file with the dataset
             writer.writerow([row[0], row[1], user.screen_name, user.followers_count, user.friends_count, user.listed_count, user.statuses_count, user.geo_enabled, user.verified,
                             user.created_at, user.has_extended_profile, user.default_profile, user.default_profile_image, retweets, with_url, with_mention, avg_cos, description, text])
