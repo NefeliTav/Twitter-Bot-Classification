@@ -34,7 +34,6 @@ spark = SparkSession.builder.master("local").getOrCreate()
 now = datetime.datetime.now()
 nltk.download('stopwords')
 nltk.download('punkt')
-nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 lancaster = LancasterStemmer()
 RANDOM_SEED = 42  # for reproducibility
