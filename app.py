@@ -280,7 +280,7 @@ def find_user(usr):
             return "human"
 
     except tweepy.TweepError:
-        pass
+        return "unknown"
 
 
 # create dataframe using dataset

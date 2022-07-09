@@ -15,8 +15,11 @@
                 <button class="btn striped-shadow dark" type="submit" value="submit"><span>Check</span></button>
             </form>
             <br>
-            {% if usr%}
+            {% if usr and usr != "unknown"%}
                 <p>It must be a {{usr}} !</p>
+            {% endif%}
+            {% if usr and usr == "unknown"%}
+                <p>Not valid screen name!</p>
             {% endif%}
 
         </div>
