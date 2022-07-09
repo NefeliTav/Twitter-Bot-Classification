@@ -16,7 +16,7 @@ Finally, with a simple Flask app, we can test our best model (Numerical Random F
 
 PySpark, in combination with the Databricks platform, enables us to cope with this big data task efficiently.
 
-RUN
+Run
 ```
 $ cd bot-website
 $ docker build -t bot .
