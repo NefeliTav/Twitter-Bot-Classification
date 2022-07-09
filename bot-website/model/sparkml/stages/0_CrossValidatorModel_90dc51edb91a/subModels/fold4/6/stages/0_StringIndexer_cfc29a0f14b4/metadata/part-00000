@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.StringIndexerModel","timestamp":1621792694548,"sparkVersion":"3.1.0","uid":"StringIndexer_cfc29a0f14b4","paramMap":{"handleInvalid":"keep","outputCol":"geo_enabled_indexed","inputCol":"geo_enabled"},"defaultParamMap":{"stringOrderType":"frequencyDesc","handleInvalid":"error","outputCol":"StringIndexer_cfc29a0f14b4__output"}}
