@@ -1,4 +1,4 @@
-# Twitter-Bot-Detection
+# Twitter Bot Detection
 
 <p align="center">
     <a href="https://spark.apache.org/docs/latest/api/python/"><img alt="PySpark" src="https://img.shields.io/badge/-pyspark-important?logo=apachespark"></a>
