@@ -15,3 +15,10 @@ We also experimented with different classifiers (Logistic Regression, Decision T
 Finally, with a simple Flask app, we can test our best model (Numerical Random Forest with AUC 0.948 and UPR 0.934).
 
 PySpark, in combination with the Databricks platform, enables us to cope with this big data task efficiently.
+
+RUN
+```
+$ cd bot-website
+$ docker build -t bot .
+$ docker run -p 5000:5000 bot:latest
+```

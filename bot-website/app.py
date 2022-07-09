@@ -102,12 +102,12 @@ def cosine_sim(X, Y):
         c += l1[i] * l2[i]
 
     try:
-        sum1=0
-        sum2=0
+        sum1 = 0
+        sum2 = 0
         for item in l1:
-            sum1+=item
+            sum1 += item
         for item in l2:
-            sum2+=item
+            sum2 += item
         cosine = c / float((sum1 * sum2) ** 0.5)
         return cosine
     except ZeroDivisionError:
@@ -191,24 +191,24 @@ def find_user(usr):
             # Clean description
         description = " ".join((re.sub(
             r"(?:\@|http?\://|https?\://|www)\S+", "", remove_emoji(user.description).replace("\n", " "))).split())
-        
+
         # Create a dataframe to store the give account's data
         bot_df = spark.createDataFrame(
             [
                 ("human", user.followers_count, user.friends_count, user.listed_count, user.statuses_count, str(user.geo_enabled), str(user.verified),
-                 str(user.created_at), str(user.has_extended_profile), str(user.default_profile), str(user.default_profile_image), retweets, with_url, with_mention,avg_cosine,description,text),
+                 str(user.created_at), str(user.has_extended_profile), str(user.default_profile), str(user.default_profile_image), retweets, with_url, with_mention, avg_cosine, description, text),
             ],
             ['account_type', 'follower_count', 'friends_count', 'listed_count', 'statuses_count', 'geo_enabled', 'verified',
-             'created_at', 'has_extended_profile', 'default_profile', 'default_profile_image', 'retweets', 'with_url', 'with_mention','avg_cosine','description', 'tweet_text']  # add your column names here
+             'created_at', 'has_extended_profile', 'default_profile', 'default_profile_image', 'retweets', 'with_url', 'with_mention', 'avg_cosine', 'description', 'tweet_text']  # add your column names here
         )
 
-        
         # Get the number of days since the account was created
         bot_df = bot_df.withColumn(
             "created_at", to_days_UDF(col("created_at")))
 
         # Cast numerical features from string to int/float
-        bot_df = bot_df.selectExpr("account_type","cast(follower_count as int) follower_count","cast(friends_count as int) friends_count","cast(listed_count as int) listed_count","cast(statuses_count as int) statuses_count","cast(retweets as float) retweets","cast(with_url as float) with_url","cast(with_mention as float) with_mention","geo_enabled", "verified", "has_extended_profile", "default_profile", "default_profile_image","cast(created_at as int) created_at","cast(avg_cosine as float) avg_cosine")
+        bot_df = bot_df.selectExpr("account_type", "cast(follower_count as int) follower_count", "cast(friends_count as int) friends_count", "cast(listed_count as int) listed_count", "cast(statuses_count as int) statuses_count", "cast(retweets as float) retweets",
+                                   "cast(with_url as float) with_url", "cast(with_mention as float) with_mention", "geo_enabled", "verified", "has_extended_profile", "default_profile", "default_profile_image", "cast(created_at as int) created_at", "cast(avg_cosine as float) avg_cosine")
 
         # Get the result and convert to pandas for display
         test_predictions = cv_model.transform(bot_df)
