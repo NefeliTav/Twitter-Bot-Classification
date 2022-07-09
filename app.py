@@ -284,7 +284,7 @@ def find_user(usr):
 
 
 # create dataframe using dataset
-df = spark.read.csv("final.csv", header='true')
+df = spark.read.csv("twitter_human_bots_dataset.csv", header='true')
 
 df_text = df
 

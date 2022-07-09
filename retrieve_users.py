@@ -79,7 +79,7 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # clean data and retrieve the interesting info for each user
-with open('3.csv', 'r', encoding='latin1') as inp, open('twitter_human_bots_dataset_clean.csv', 'w', newline='') as out:
+with open('twitter_human_bots_dataset.csv', 'r', encoding='latin1') as inp, open('twitter_human_bots_dataset_clean.csv', 'w', newline='') as out:
     # next(inp)
     writer = csv.writer(out)
     writer.writerow(['id', 'account_type', 'screen_name', 'follower_count', 'friends_count', 'listed_count', 'statuses_count', 'geo_enabled', 'verified',
