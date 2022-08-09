@@ -18,7 +18,5 @@ PySpark, in combination with the Databricks platform, enables us to cope with th
 
 Run
 ```
-$ cd bot-website
-$ docker build -t bot .
-$ docker run -p 5000:5000 bot:latest
+$ docker-compose up
 ```
